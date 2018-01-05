@@ -7,9 +7,15 @@ import { fetchCategories } from './actions/category.action'
 
 import PostCreate from './components/PostCreate';
 import PostEdit from './components/PostEdit';
+import PostListView from "./components/PostListView";
+
 const ConnectedSwitch = connect(state => ({
 	location: state.router.location
 }))(Switch)
+
+function Category({match}) {
+	return <PostListView category={match.params.category}/>
+}
 
 class App extends Component {
 	
@@ -43,8 +49,10 @@ class App extends Component {
 				</div>
 				
 				<ConnectedSwitch>
+					<Route exact path="/" component={PostListView} />
 					<Route exact path="/posts/create" component={PostCreate} />
 					<Route path="/posts/:id/edit" component={PostEdit} />
+					<Route path="/:category" component={Category} />
 				</ConnectedSwitch>
 			</div>
 		)

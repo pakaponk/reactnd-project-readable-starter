@@ -2,6 +2,128 @@ import uuidv4 from 'uuid/v4'
 
 const BASE_URL = 'http://localhost:3001'
 
+export const FETCH_POSTS_REQUEST = 'FETCH_POSTS_REQUEST'
+const fetchPostsRequest = () => ({
+    type: FETCH_POSTS_REQUEST
+})
+
+export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS'
+const fetchPostsSuccess = (posts) => ({
+    type: FETCH_POSTS_SUCCESS,
+    posts
+})
+
+export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE'
+const fetchPostsFailure = (error) => ({
+    type: FETCH_POSTS_FAILURE,
+    error
+})
+
+export const fetchPosts = ({category = null}) => {
+    return async (dispatch) => {
+        dispatch(fetchPostsRequest())
+
+        const endpoint = category ? `${category}/posts` : 'posts'
+
+        try {
+            const response = await fetch(
+                `${BASE_URL}/${endpoint}`,
+                {
+                    headers: {
+                        'Authorization': 'helloworld'
+                    }
+                }
+            )
+            const posts = await response.json()
+            return dispatch(fetchPostsSuccess(posts))
+        } catch (error) {
+            return Promise.reject(dispatch(fetchPostsFailure(error)))
+        }
+    }
+}
+
+export const VOTE_POST_REQUEST = 'VOTE_POST_REQUEST'
+const votePostRequest = () => ({
+    type: VOTE_POST_REQUEST
+})
+
+export const VOTE_POST_SUCCESS = 'VOTE_POST_SUCCESS'
+const votePostSuccess = (post) => ({
+    type: VOTE_POST_SUCCESS,
+    post
+})
+
+export const VOTE_POST_FAILURE = 'VOTE_POST_FAILURE'
+const votePostFailure = (error) => ({
+    type: VOTE_POST_FAILURE,
+    error
+})
+
+export const votePost = (id, isUpVote) => {
+    return async (dispatch) => {
+        dispatch(votePostRequest())
+
+        try {
+            const response = await fetch(
+                `${BASE_URL}/posts/${id}`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        option: isUpVote ? "upVote" : "downVote"
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'helloworld'
+                    }
+                }
+            )
+            const post = await response.json()
+            return dispatch(votePostSuccess(post))
+        } catch (error) {
+            return dispatch(votePostFailure(error))
+        }
+    }
+}
+
+export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST'
+const deletePostRequest = () => ({
+    type: DELETE_POST_REQUEST
+})
+
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS'
+const deletePostSuccess = (post) => ({
+    type: DELETE_POST_SUCCESS,
+    post
+})
+
+export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE'
+const deletePostFailure = (error) => ({
+    type: DELETE_POST_FAILURE,
+    error
+})
+
+export const deletePost = (id) => {
+    return async (dispatch) => {
+        dispatch(deletePostRequest())
+
+        try {
+            const response = await fetch(
+                `${BASE_URL}/posts/${id}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'helloworld'
+                    }
+                }
+            )
+            const post = await response.json()
+            return dispatch(deletePostSuccess(post))
+        } catch (error) {
+            return dispatch(deletePostFailure(error))
+        }
+    }
+}
+
 export const CREATE_POST_REQUEST = 'CREATE_POST_REQUEST'
 const createPostRequest = () => ({
     type: CREATE_POST_REQUEST
