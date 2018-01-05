@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import faThumbsUp from '@fortawesome/fontawesome-free-solid/faThumbsUp'
 import faThumbsDown from '@fortawesome/fontawesome-free-solid/faThumbsDown'
-// import faEdit from '@fortawesome/fontawesome-free-solid/faEdit'
+import faEdit from '@fortawesome/fontawesome-free-solid/faEdit'
 import faTrash from '@fortawesome/fontawesome-free-solid/faTrash'
 
 import { deleteComment, voteComment } from '../actions/comment.action'
@@ -68,6 +69,10 @@ class CommentListItem extends Component {
                     </div>
                 </div>
                 <div className={`ml-auto ${ this.state.isHovered ? '' : 'invisible' }`}>
+                    <Link className="btn btn-secondary btn-sm" to={`/comments/${comment.id}/edit`}>
+                        <FontAwesomeIcon icon={faEdit} className="mr-1" /> Edit
+                    </Link>
+
                     <button type="button" className="ml-2 btn btn-danger btn-sm"
                         onClick={() => this.props.delete(comment.id)}>
                         <FontAwesomeIcon icon={faTrash} className="mr-1" /> Delete

@@ -3,11 +3,34 @@ import React, { Component } from 'react'
 class CommentForm extends Component {
     
     state = {
+        isEditMode: false,
         wasValidated: false,
         isSubmitting: false,
         comment: {
             author: '',
             body: '',
+        }
+    }
+
+    componentDidMount() {
+        const { comment } = this.props
+
+        if (comment && Object.keys(comment).length) {
+            this.setState({
+                comment,
+                isEditMode: true
+            })
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { comment } = this.props
+
+        if (comment && Object.keys(comment).length && prevProps.comment !== comment) {
+            this.setState({
+                comment,
+                isEditMode: true
+            })
         }
     }
 
@@ -36,15 +59,19 @@ class CommentForm extends Component {
             })
 
             try {
-                await this.props.submit(this.props.parentId, this.state.comment)
-                this.setState({
-                    wasValidated: false,
-                    isSubmitting: false,
-                    comment: {
-                        author: '',
-                        body: '',
-                    }
-                })
+                if (this.state.isEditMode) {
+                    await this.props.submit(this.state.comment)
+                } else {
+                    await this.props.submit(this.props.parentId, this.state.comment)
+                    this.setState({
+                        wasValidated: false,
+                        isSubmitting: false,
+                        comment: {
+                            author: '',
+                            body: '',
+                        }
+                    })
+                }
             } catch(error) {
                 this.setState({
                     isSubmitting: false
@@ -63,14 +90,14 @@ class CommentForm extends Component {
     }
     
     render() {
-        const { comment, wasValidated, isSubmitting } = this.state
+        const { comment, wasValidated, isSubmitting, isEditMode } = this.state
 
         return (
             <form className={`${ wasValidated ? 'was-validated' : ''}`} 
                 onSubmit={this.handleSubmit} noValidate>
                 <div className="form-group">   
                     <label htmlFor="author">Author</label>
-                    <input type="text" name="author" className="form-control" value={comment.author} onChange={this.handleChange} required /> 
+                    <input type="text" name="author" className="form-control" value={comment.author} onChange={this.handleChange} disabled={isEditMode} required/> 
                     <div className="invalid-feedback">Please fill your name</div>     
                 </div>
 

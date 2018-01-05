@@ -168,3 +168,93 @@ export const voteComment = ({ id, isUpVote }) => {
         }
     }
 }
+
+export const GET_COMMENT_REQUEST = 'GET_COMMENT_REQUEST'
+const getCommentRequest = () => ({
+    type: GET_COMMENT_REQUEST
+})
+
+export const GET_COMMENT_SUCCESS = 'GET_COMMENT_SUCCESS'
+const getCommentSuccess = (comment) => ({
+    type: GET_COMMENT_SUCCESS,
+    comment
+})
+
+export const GET_COMMENT_FAILURE = 'GET_COMMENT_FAILURE'
+const getCommentFailure = (error) => ({
+    type: GET_COMMENT_FAILURE,
+    error
+})
+
+export const getComment = ({id}) => {
+    return async (dispatch) => {
+        dispatch(getCommentRequest())
+
+        try {
+            const response = await fetch(
+                `${BASE_URL}/comments/${id}`,
+                {
+                    headers: {
+                        'Authorization': 'helloworld'
+                    }
+                }
+            )
+            const comment = await response.json()
+
+            if (Object.keys(comment).length){
+                return dispatch(getCommentSuccess(comment))
+            }
+            else {
+                return Promise.reject(getCommentFailure({message: "Not Found"}))
+            }
+        } catch (error) {
+            return Promise.reject(dispatch(getCommentFailure(error)))
+        }
+    }
+}
+
+export const EDIT_COMMENT_REQUEST = 'EDIT_COMMENT_REQUEST'
+const editCommentRequest = () => ({
+    type: EDIT_COMMENT_REQUEST
+})
+
+export const EDIT_COMMENT_SUCCESS = 'EDIT_COMMENT_SUCCESS'
+const editCommentSuccess = (comment) => ({
+    type: EDIT_COMMENT_SUCCESS,
+    comment
+})
+
+export const EDIT_COMMENT_FAILURE = 'EDIT_COMMENT_FAILURE'
+const editCommentFailure = (error) => ({
+    type: EDIT_COMMENT_FAILURE,
+    error
+})
+
+export const editComment = (comment) => {
+    return async (dispatch) => {
+        dispatch(editCommentRequest())
+
+        const { id, body } = comment
+
+        try {
+            const response = await fetch(
+                `${BASE_URL}/comments/${id}`,
+                {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        body,
+                        timestamp: Date.now()
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'helloworld'
+                    },
+                }
+            )
+            const content = await response.json()
+            return dispatch(editCommentSuccess(content))
+        } catch (error) {
+            return Promise.reject(dispatch(editCommentFailure(error)))
+        }
+    }
+}

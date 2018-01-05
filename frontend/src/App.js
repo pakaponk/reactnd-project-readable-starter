@@ -9,6 +9,7 @@ import PostCreate from './components/PostCreate';
 import PostEdit from './components/PostEdit';
 import PostListView from "./components/PostListView";
 import PostDetail from "./components/PostDetail";
+import CommentEdit from './components/CommentEdit';
 
 const ConnectedSwitch = connect(state => ({
 	location: state.router.location
@@ -52,7 +53,8 @@ class App extends Component {
 				<ConnectedSwitch>
 					<Route exact path="/" component={PostListView} />
 					<Route exact path="/posts/create" component={PostCreate} />
-					<Route path="/posts/:id/edit" component={PostEdit} />
+					<Route exact path="/posts/:id/edit" component={PostEdit} />
+					<Route exact path="/comments/:id/edit" component={CommentEdit} />
 					<Route path="/:category/:post_id" component={PostDetail} />
 					<Route path="/:category" component={Category} />
 				</ConnectedSwitch>
