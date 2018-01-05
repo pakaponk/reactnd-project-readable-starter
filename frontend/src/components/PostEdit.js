@@ -9,6 +9,11 @@ class PostEdit extends Component {
     
     componentDidMount() {
         this.props.getPost(this.props.match.params.id)
+        .catch(action => {
+            if (action.error.message === "Not Found") {
+                this.props.history.push('/')
+            }
+        })
     }
 
     render() {
@@ -39,7 +44,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     return {
         editPost: async (post) => {
             await dispatch(editPost(post))
-            ownProps.history.push('/')
+            ownProps.history.push(`/${post.category}/${post.id}`)
         },
         getPost: (id) => dispatch(getPost({id}))
     }

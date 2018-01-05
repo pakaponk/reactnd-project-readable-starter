@@ -14,7 +14,6 @@ class PostDetail extends Component {
 
         this.props.getPost(this.props.match.params.post_id)
         .catch(action => {
-            console.log(action.error.message)
             if (action.error.message === "Not Found") {
                 this.props.history.push('/')
             }

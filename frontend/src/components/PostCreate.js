@@ -30,8 +30,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch, ownProps) {
     return {
         createPost: async (post) => {
-            await dispatch(createPost(post))
-            ownProps.history.push('/')
+            const action = await dispatch(createPost(post))
+            ownProps.history.push(`/${action.post.category}/${action.post.id}`)
         }
     }
 }
