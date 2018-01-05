@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { fetchCategories } from './actions/category.action'
 
 import PostCreate from './components/PostCreate';
+import PostEdit from './components/PostEdit';
 const ConnectedSwitch = connect(state => ({
 	location: state.router.location
 }))(Switch)
@@ -43,6 +44,7 @@ class App extends Component {
 				
 				<ConnectedSwitch>
 					<Route exact path="/posts/create" component={PostCreate} />
+					<Route path="/posts/:id/edit" component={PostEdit} />
 				</ConnectedSwitch>
 			</div>
 		)

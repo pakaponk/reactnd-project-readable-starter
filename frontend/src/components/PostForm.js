@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 class PostForm extends Component {
     
     state = {
+        isEditMode: false,
         wasValidated: false,
         isSubmitting: false,
         post: {
@@ -13,13 +14,24 @@ class PostForm extends Component {
         }
     }
 
-    constructor(props) {
-        super(props)
-
+    componentDidMount() {
         const { post } = this.props
-        if (post) {
+
+        if (post && Object.keys(post).length) {
             this.setState({
-                post
+                post,
+                isEditMode: true
+            })
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { post } = this.props
+
+        if (post && Object.keys(post).length && !Object.is(prevProps.post, post)) {
+            this.setState({
+                post,
+                isEditMode: true
             })
         }
     }
@@ -54,11 +66,14 @@ class PostForm extends Component {
 
     isPostValid() {
         const { post } = this.state
-        return Object.keys(post).filter(key => !post[key].trim()).length === 0
+
+        return Object.keys(post)
+            .filter(key => typeof post[key] === 'string')
+            .filter(key => !post[key].trim()).length === 0
     }
 
     render() {
-        const { post, wasValidated, isSubmitting } = this.state
+        const { post, wasValidated, isSubmitting, isEditMode } = this.state
         const categories = this.props.categories.items
 
         return (
@@ -78,13 +93,13 @@ class PostForm extends Component {
 
                 <div className="form-group">   
                     <label htmlFor="author">Author</label>
-                    <input type="text" name="author" className="form-control" value={post.author} onChange={this.handleChange} required/> 
+                    <input type="text" name="author" className="form-control" value={post.author} onChange={this.handleChange} required disabled={isEditMode}/> 
                     <div className="invalid-feedback">Please fill your name</div>     
                 </div>
 
                 <div className="form-group">   
                     <label htmlFor="category">Category</label>
-                    <select name="category" className="form-control" value={post.category} onChange={this.handleChange} required>
+                    <select name="category" className="form-control" value={post.category} onChange={this.handleChange} required disabled={isEditMode}>
                         { !post.category ? <option value="">Please select Category</option> : '' }
                         { 
                             categories.map((category, index) => (
