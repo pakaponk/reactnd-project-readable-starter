@@ -1,22 +1,34 @@
-# Readable API Server
+# Readble Project
 
-This is the starter project for the final assessment project for Udacity's Redux course where you will build a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
+This is the complete version of the final assessment project for Udacity's React & Redux course, developed by [React Training](https://reacttraining.com).
 
-This repository includes the code for the backend API Server that you'll use to develop and interact with the front-end portion of the project.
+The objective of this project is to build a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
 
-## Start Developing
+Note that the API server are provided by [Udacity React Nanodegree Program](https://www.udacity.com/course/react-nanodegree--nd019). 
+Information about the API server and how to use it can be found in its [README](api-server/README.md) file.
 
-To get started developing right away:
+## Installation
 
-* Install and start the API server
+1.	Clone this repository to your local machine.
+2.	Go to the directory that your cloned it to.
+3.  Install and start the API server
     - `cd api-server`
     - `npm install`
     - `node server`
-* In another terminal window, use Create React App to scaffold out the front-end
-    - `create-react-app frontend`
+4.	In another terminal window, install and start the frontend application.
     - `cd frontend`
+    - `npm install` 
     - `npm start`
+5.	Open `http://localhost:3000/` to see the app.
 
-## API Server
+## create-react-app
 
-Information about the API server and how to use it can be found in its [README file](api-server/README.md).
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+
+## Contributing
+
+Please feel free to submit any issues or pull requests. ESLint and EditConfig configuration are already included so please be strict with them 
+
+### License
+
+This project is [MIT licensed](LICENSE)
