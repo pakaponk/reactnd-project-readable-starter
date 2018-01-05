@@ -5,6 +5,10 @@ import { connect } from "react-redux";
 
 import { fetchCategories } from './actions/category.action'
 
+import PostCreate from './components/PostCreate';
+const ConnectedSwitch = connect(state => ({
+	location: state.router.location
+}))(Switch)
 
 class App extends Component {
 	
@@ -13,7 +17,6 @@ class App extends Component {
 	}
 
 	render() {
-
 		const categories = this.props.categories.items.map(category => ({
 			...category,
 			title: category.name.slice(0, 1).toUpperCase() + category.name.slice(1)
@@ -38,7 +41,9 @@ class App extends Component {
 					}
 				</div>
 				
-	
+				<ConnectedSwitch>
+					<Route exact path="/posts/create" component={PostCreate} />
+				</ConnectedSwitch>
 			</div>
 		)
 	}
