@@ -30,7 +30,7 @@ function PostList(props){
                 </div>  
             </div>
             { posts.length > 0 ? 
-                posts.map(post => <PostListItem key={post.id} post={post} />) : 
+                posts.map(post => <PostListItem key={post.id} post={post} compact />) : 
                 <div className="p-5 bg-light text-center rounded">
                     <h3 className="text-muted">Do not found any Posts</h3>
                 </div>

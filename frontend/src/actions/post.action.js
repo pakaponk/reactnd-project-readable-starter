@@ -80,7 +80,7 @@ export const votePost = (id, isUpVote) => {
             const post = await response.json()
             return dispatch(votePostSuccess(post))
         } catch (error) {
-            return dispatch(votePostFailure(error))
+            return Promise.reject(dispatch(votePostFailure(error)))
         }
     }
 }
@@ -119,7 +119,7 @@ export const deletePost = (id) => {
             const post = await response.json()
             return dispatch(deletePostSuccess(post))
         } catch (error) {
-            return dispatch(deletePostFailure(error))
+            return Promise.reject(dispatch(deletePostFailure(error)))
         }
     }
 }
@@ -200,7 +200,13 @@ export const getPost = ({ id }) => {
                 }
             )
             const post = await response.json()
-            return dispatch(getPostSuccess(post))
+
+            if (Object.keys(post).length){
+                return dispatch(getPostSuccess(post))
+            }
+            else {
+                return Promise.reject(getPostFailure({message: "Not Found"}))
+            }
         } catch (error) {
             return Promise.reject(dispatch(getPostFailure(error)))
         }

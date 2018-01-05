@@ -49,7 +49,7 @@ class PostListItem extends Component {
     }
 
     render() {
-        const post = this.props.post
+        const { post, compact } = this.props
     
         return (
             <div className="d-flex p-3 mb-3 bg-light rounded" 
@@ -58,24 +58,28 @@ class PostListItem extends Component {
                     <h4>{post.title}</h4>
                     <span className="text-muted">by {post.author}</span>
                     <span className="pl-3">
-                        <FontAwesomeIcon icon={ post.voteScore > 0 ? faThumbsUp : faThumbsDown } /> {post.voteScore}
+                        <FontAwesomeIcon icon={ post.voteScore >= 0 ? faThumbsUp : faThumbsDown } /> {post.voteScore}
                     </span> 
                     <span className="pl-3">
                         <FontAwesomeIcon icon={ faComments } /> {post.commentCount}
                     </span>
+
+                    { !compact && <p className="mt-3">
+                        {post.body}
+                    </p> }
         
                     <div className="mt-3">
-                        <button type="button" className="btn btn-info">
+                        { compact && <Link className="btn btn-info mr-2" to={`/${post.category}/${post.id}`}>
                             <FontAwesomeIcon icon={faInfo} className="mr-1" /> View
-                        </button>
+                        </Link> }
         
-                        <button type="button" className="ml-2 btn btn-success" 
+                        <button type="button" className="mr-2 btn btn-success" 
                             onClick={() => this.vote(true)} 
                             disabled={this.state.isVoting}>
                             <FontAwesomeIcon icon={faThumbsUp} className="mr-1" /> Upvote
                         </button>
         
-                        <button type="button" className="ml-2 btn btn-danger" 
+                        <button type="button" className="btn btn-danger" 
                             onClick={() => this.vote(false)}
                             disabled={this.state.isVoting}>
                             <FontAwesomeIcon icon={faThumbsDown} className="mr-1" /> Downvote

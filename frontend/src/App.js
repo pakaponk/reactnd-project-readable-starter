@@ -8,6 +8,7 @@ import { fetchCategories } from './actions/category.action'
 import PostCreate from './components/PostCreate';
 import PostEdit from './components/PostEdit';
 import PostListView from "./components/PostListView";
+import PostDetail from "./components/PostDetail";
 
 const ConnectedSwitch = connect(state => ({
 	location: state.router.location
@@ -52,6 +53,7 @@ class App extends Component {
 					<Route exact path="/" component={PostListView} />
 					<Route exact path="/posts/create" component={PostCreate} />
 					<Route path="/posts/:id/edit" component={PostEdit} />
+					<Route path="/:category/:post_id" component={PostDetail} />
 					<Route path="/:category" component={Category} />
 				</ConnectedSwitch>
 			</div>
